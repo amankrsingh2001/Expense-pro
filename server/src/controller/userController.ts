@@ -71,7 +71,6 @@ export const login = async(req:Request, res:Response)=>{
                 return;
             }
            const token =  jwt.sign({id:findUser.id}, process.env.JWT_SECRET as string , {expiresIn:'5h'})
-           console.log(token)
             res.status(200).json({
                 success:true,
                 message:"Logged in successfully",

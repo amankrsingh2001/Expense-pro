@@ -14,7 +14,7 @@ interface LoginData  {
 
 export function Login(navigate:NavigateFunction, data:LoginData,setIsLoading:React.Dispatch<React.SetStateAction<boolean>> ){
     return async (dispatch:any)=>{
-        console.log(data)
+
         const id = toast.loading('...Loading')
         try {
             const loginUser = await axios.post(`${BASE_URL}/user/login`, data)
@@ -23,7 +23,6 @@ export function Login(navigate:NavigateFunction, data:LoginData,setIsLoading:Rea
                     id:id
                 })
             }
-            console.log(loginUser)
             dispatch(setToken(`Bearer ${loginUser.data.token}`))
             localStorage.setItem('token', `Bearer ${loginUser.data.token}`)
             setIsLoading(false)
@@ -115,7 +114,7 @@ export function addIncome( token:string, data:any){
 
 export function deleteAsset(token:string, id:string, category:string, view:string){
     return async (dispatch:any)=>{
-        console.log("here")
+
         try {
          await axios.delete(`${BASE_URL}/expense/${category.toLowerCase()}/${id}`,{
         headers:{

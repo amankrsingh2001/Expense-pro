@@ -55,7 +55,7 @@ export const addExpense =  async(req:Request, res:Response)=>{
     try {
         const data = req.body;
         const id = req.id
-        console.log(data)
+
         if(!data || !id) {
             res.status(404).json({
                 success:false,
@@ -90,7 +90,6 @@ export const addExpense =  async(req:Request, res:Response)=>{
         return;
 
     } catch (error) {
-        console.log(error)
             const err = (error as Error).message
             res.status(500).json({
                 success:false,
@@ -103,7 +102,6 @@ export const addExpense =  async(req:Request, res:Response)=>{
 export const getAllExpense = async(req:Request, res:Response)=>{
     try {
         const userId = req.id
-        console.log(userId)
         if(!userId ){
             res.status(404).json({
                 success:false,
@@ -172,7 +170,6 @@ export const getAllIncome = async(req:Request, res:Response)=>{
 export const getIncomebyId = async(req:Request, res:Response)=>{
     try {
         const id = req.params
-        console.log(id)
         const userId = req.id
 
         const getSingleIncome = await prisma.income.findFirst({
@@ -216,7 +213,6 @@ export const getIncomebyId = async(req:Request, res:Response)=>{
 export const getExpensebyId = async(req:Request, res:Response)=>{
     try {
         const id = req.params
-        console.log(id)
         const userId = req.id
 
         const getSingleExpense = await prisma.expense.findFirst({
@@ -260,7 +256,6 @@ export const getExpensebyId = async(req:Request, res:Response)=>{
 export const removeIncome = async(req:Request, res:Response)=>{
     try {
         const {id} = req.params;
-        console.log(id,"This is the params id")
         if(!id || id == undefined){
             throw new Error("Id not found")
         }

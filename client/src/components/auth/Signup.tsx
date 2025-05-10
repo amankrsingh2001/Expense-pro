@@ -67,7 +67,6 @@ const SignupForm = () => {
         toast.dismiss(id)
         navigate('/login')
       }
-      console.log(createUser) 
     } catch (error) {
       const err = (error as Error).message
       toast.error(`${err} ||  Error`, {
