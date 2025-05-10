@@ -8,9 +8,13 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.removeExpense = exports.removeIncome = exports.getExpensebyId = exports.getIncomebyId = exports.getAllIncome = exports.getAllExpense = exports.addExpense = exports.addIncome = void 0;
+exports.pdfList = exports.removeExpense = exports.removeIncome = exports.getExpensebyId = exports.getIncomebyId = exports.getAllIncome = exports.getAllExpense = exports.addExpense = exports.addIncome = void 0;
 const prisma_1 = require("../lib/prisma");
+const pdfkit_1 = __importDefault(require("pdfkit"));
 const addIncome = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const data = req.body;
@@ -60,7 +64,6 @@ const addExpense = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     try {
         const data = req.body;
         const id = req.id;
-        console.log(data);
         if (!data || !id) {
             res.status(404).json({
                 success: false,
@@ -93,7 +96,6 @@ const addExpense = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         return;
     }
     catch (error) {
-        console.log(error);
         const err = error.message;
         res.status(500).json({
             success: false,
@@ -106,7 +108,6 @@ exports.addExpense = addExpense;
 const getAllExpense = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const userId = req.id;
-        console.log(userId);
         if (!userId) {
             res.status(404).json({
                 success: false,
@@ -171,7 +172,6 @@ exports.getAllIncome = getAllIncome;
 const getIncomebyId = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const id = req.params;
-        console.log(id);
         const userId = req.id;
         const getSingleIncome = yield prisma_1.prisma.income.findFirst({
             where: {
@@ -212,7 +212,6 @@ exports.getIncomebyId = getIncomebyId;
 const getExpensebyId = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const id = req.params;
-        console.log(id);
         const userId = req.id;
         const getSingleExpense = yield prisma_1.prisma.expense.findFirst({
             where: {
@@ -253,7 +252,6 @@ exports.getExpensebyId = getExpensebyId;
 const removeIncome = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { id } = req.params;
-        console.log(id, "This is the params id");
         if (!id || id == undefined) {
             throw new Error("Id not found");
         }
@@ -301,3 +299,57 @@ const removeExpense = (req, res) => __awaiter(void 0, void 0, void 0, function* 
     }
 });
 exports.removeExpense = removeExpense;
+const pdfList = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        // Initialize PDF document
+        const doc = new pdfkit_1.default({ size: 'A4', margin: 50 });
+        // Set response headers for PDF download
+        res.setHeader('Content-Type', 'application/pdf');
+        doc.pipe(res);
+        doc.fontSize(20).text('Monthly Financial Report', { align: 'center' });
+        doc.moveDown(1.5);
+        doc.fontSize(16).text('Income Transactions', { underline: true });
+        doc.moveDown(0.5);
+        const batchSize = 5000;
+        let skip = 0;
+        while (true) {
+            const incomes = yield prisma_1.prisma.income.findMany({
+                skip,
+                take: batchSize,
+                orderBy: { date: 'asc' },
+            });
+            if (incomes.length === 0)
+                break;
+            incomes.forEach((income) => {
+                const line = `${income.date.toISOString().split('T')[0]}| ${income.title} | ${income.description} | ₹${income.amount}`;
+                doc.fontSize(12).text(line);
+            });
+            skip += batchSize;
+        }
+        doc.addPage();
+        doc.fontSize(16).text('Expense Transactions', { underline: true });
+        doc.moveDown(0.5);
+        skip = 0;
+        while (true) {
+            const expenses = yield prisma_1.prisma.expense.findMany({
+                skip,
+                take: batchSize,
+                orderBy: { date: 'asc' },
+            });
+            if (expenses.length === 0)
+                break;
+            expenses.forEach((expense) => {
+                const line = `${expense.date.toISOString().split('T')[0]} | ${expense.title}  | ${expense.description} | ₹${expense.amount}`;
+                doc.fontSize(12).text(line);
+            });
+            skip += batchSize;
+        }
+        // Finalize the PDF
+        doc.end();
+    }
+    catch (error) {
+        console.error('Error generating PDF:', error);
+        res.status(500).json({ error: 'Failed to generate PDF' });
+    }
+});
+exports.pdfList = pdfList;

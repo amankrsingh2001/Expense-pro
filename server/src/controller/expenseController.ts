@@ -2,6 +2,7 @@
 import { Request, Response } from "express";
 
 import { prisma } from "../lib/prisma";
+import PDFDocument from 'pdfkit';
 
 export const  addIncome =  async(req:Request, res:Response)=>{
 try {
@@ -302,4 +303,77 @@ export const removeExpense = async(req:Request, res:Response)=>{
             message:err || "Something went wrong"
         })
     }
+}
+
+export const pdfList = async(req:Request, res:Response)=>{
+    try {
+
+    const doc = new PDFDocument({ size: 'A4', margin: 50 });
+
+
+    res.setHeader('Content-Disposition', 'attachment; filename=expense-report.pdf');
+    res.setHeader('Content-Type', 'application/pdf');
+
+   
+    doc.pipe(res);
+
+    
+    doc.fontSize(20).text('Monthly Financial Report', { align: 'center' });
+    doc.moveDown(1.5);
+
+
+    doc.fontSize(16).text('Income Transactions', { underline: true });
+    doc.moveDown(0.5);
+
+    const batchSize = 5000;
+    let skip = 0;
+
+    while (true) {
+      const incomes: any = await prisma.income.findMany({
+        skip,
+        take: batchSize,
+        orderBy: { date: 'asc' },
+      });
+
+      if (incomes.length === 0) break;
+
+      incomes.forEach((income:any) => {
+        const line = `${income.date.toISOString().split('T')[0]}| ${income.title} | ${income.description} | ₹${income.amount}`;
+        doc.fontSize(12).text(line);
+      });
+
+      skip += batchSize;
+    }
+
+    doc.addPage();
+
+
+    doc.fontSize(16).text('Expense Transactions', { underline: true });
+    doc.moveDown(0.5);
+
+    skip = 0;
+
+    while (true) {
+      const expenses: any = await prisma.expense.findMany({
+        skip,
+        take: batchSize,
+        orderBy: { date: 'asc' },
+      });
+
+      if (expenses.length === 0) break;
+
+      expenses.forEach((expense:any) => {
+        const line = `${expense.date.toISOString().split('T')[0]} | ${expense.title}  | ${expense.description} | ₹${expense.amount}`;
+        doc.fontSize(12).text(line);
+      });
+
+      skip += batchSize;
+    }
+
+
+    doc.end();
+  } catch (error) {
+    console.error('Error generating PDF:', error);
+    res.status(500).json({ error: 'Failed to generate PDF' });
+  }
 }

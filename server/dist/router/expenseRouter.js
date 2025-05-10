@@ -7,6 +7,7 @@ const auth_1 = require("../middleware/auth");
 exports.expenseRouter = (0, express_1.Router)();
 exports.expenseRouter.get('/getAllExpense', auth_1.auth, expenseController_1.getAllExpense);
 exports.expenseRouter.get('/getAllIncome', auth_1.auth, expenseController_1.getAllIncome);
+exports.expenseRouter.get('/pdfList', auth_1.auth, expenseController_1.pdfList);
 exports.expenseRouter.post('/addExpense', auth_1.auth, expenseController_1.addExpense);
 exports.expenseRouter.post('/addIncome', auth_1.auth, expenseController_1.addIncome);
 exports.expenseRouter.delete('/expense/:id', auth_1.auth, expenseController_1.removeExpense);

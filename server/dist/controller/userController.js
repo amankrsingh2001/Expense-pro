@@ -82,7 +82,6 @@ const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             return;
         }
         const token = jsonwebtoken_1.default.sign({ id: findUser.id }, process.env.JWT_SECRET, { expiresIn: '5h' });
-        console.log(token);
         res.status(200).json({
             success: true,
             message: "Logged in successfully",
