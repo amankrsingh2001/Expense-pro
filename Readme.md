@@ -19,6 +19,7 @@ This is a modern full-stack web application built with **TypeScript**, **Prisma*
 - **Tailwind CSS** for styling
 - **Radix UI** and **Lucide Icons**
 - **Redux Toolkit** for state management
+- **Redux Thunks for async operations
 - **React Router v7**
 - **React Hook Form for form validation
 - **Framer Motion** for animations
@@ -50,6 +51,8 @@ This is a modern full-stack web application built with **TypeScript**, **Prisma*
 ### 1. Clone the Repository
 
 ```bash
+git clone https://github.com/amankrsingh2001/Expense-pro/tree/main
+cd Expense-pro
 
 
 cd server
