@@ -1,6 +1,5 @@
-import { Outlet, useLocation, useNavigate } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import { DashboardSidebar } from "./DashboardSidebar";
-import { ExpenseManager } from "./ExpenseManager";
 import { getAllExpense, getAllIncome } from "@/redux/api/api";
 import { useDispatch, useSelector } from "react-redux";
 import type { AppDispatch } from "@/redux/store/Store";

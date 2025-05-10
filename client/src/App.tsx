@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, CircleCheck } from "lucide-react";
+import { ArrowRight} from "lucide-react";
 import { motion } from "framer-motion";
 import { useSelector } from "react-redux";
 import { useEffect } from "react";

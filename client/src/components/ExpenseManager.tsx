@@ -11,10 +11,9 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Textarea } from "@/components/ui/textarea"
 import { useDispatch, useSelector } from "react-redux"
 import type { AppDispatch } from "@/redux/store/Store"
-import { addExpense, addIncome, deleteAsset,  } from "@/redux/api/api"
+import { addExpense, addIncome, BASE_URL, deleteAsset,  } from "@/redux/api/api"
 import {  type expenseState } from "@/redux/slice/assetSlice"
-import { exportToPDF } from "@/lib/pdf"
-import { toast } from "sonner"
+import axios from "axios"
 
 
 // Define the expense type
@@ -73,6 +72,23 @@ export function ExpenseManager({ view }: { view: ViewType }) {
   const handleDelete = async(id:string, category:string)=>{
     dispatch(deleteAsset(token,id,category));
   }
+  const pdfDownloadHandler = async()=>{
+    const getPdfList = await axios.get(`${BASE_URL}/expense/pdfList`,{
+      responseType: 'blob', 
+      headers:{
+        Authorization:token
+      }
+    })
+    const url = window.URL.createObjectURL(new Blob([getPdfList.data]));
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', 'expense-report.pdf');
+    document.body.appendChild(link);
+    link.click();
+
+    link.parentNode?.removeChild(link);
+    window.URL.revokeObjectURL(url);
+  }
 
 
   return (
@@ -83,7 +99,7 @@ export function ExpenseManager({ view }: { view: ViewType }) {
           {showForm ? "Cancel" : "Add Transaction"}
         </Button> 
 
-        <Button className="bg-[#2373ba]" onClick={() => exportToPDF(filteredExpenses)}>
+        <Button className="bg-[#2373ba]" onClick={()=>pdfDownloadHandler()}>
           <Download className="h-4 w-4 " />
           Export to Pdf
         </Button>
