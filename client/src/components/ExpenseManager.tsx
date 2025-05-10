@@ -78,12 +78,12 @@ export function ExpenseManager({ view }: { view: ViewType }) {
   return (
     <div className="space-y-8">
       <div className="flex items-center justify-between">
-        <Button className="bg-[#1447E6]" onClick={() => setShowForm(!showForm)}>
+        <Button className="bg-[#2373ba]" onClick={() => setShowForm(!showForm)}>
           <Plus className=" h-4 w-4" />
           {showForm ? "Cancel" : "Add Transaction"}
         </Button> 
 
-        <Button className="bg-[#1447E6]" onClick={() => exportToPDF(filteredExpenses)}>
+        <Button className="bg-[#2373ba]" onClick={() => exportToPDF(filteredExpenses)}>
           <Download className="h-4 w-4 " />
           Export to Pdf
         </Button>
@@ -187,7 +187,7 @@ export function ExpenseManager({ view }: { view: ViewType }) {
               </div>
 
               <div className="flex gap-2">
-                <Button type="submit" className="flex-1 bg-[#1447E6]  hover:bg-[#1447E6] ">
+                <Button type="submit" className="flex-1 bg-[#2373ba]  hover:bg-[#2373ba] ">
                   <Plus className="mr-2 h-4 w-4" /> Add Transaction
                 </Button>
                 <Button type="button" variant="outline" onClick={() => setShowForm(false)}>

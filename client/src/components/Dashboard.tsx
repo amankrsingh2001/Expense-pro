@@ -25,6 +25,8 @@ export default function Dashboard() {
       asset.incomeData.length == 0
     ) {
       getUserExpense();
+      navigate('/dashboard/expense')
+
     }
   }, []);
 

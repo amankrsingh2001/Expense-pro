@@ -20,7 +20,7 @@ const Signup = () => {
                 }
             })
              if(verify.data.success){
-                navigate('/expense')
+                navigate('/dashboard/expense')
             }
 
         } catch (error) {

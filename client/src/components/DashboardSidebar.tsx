@@ -51,14 +51,14 @@ export function DashboardSidebar() {
       <div className="h-screen  overflow-hidden">
         <Sidebar>
           <SidebarHeader className="border-b px-6 py-3">
-            <h2 className="text-xl text-[#1447E6] font-bold">Expense Manager</h2>
+            <h2 className="text-xl text-[#2373ba] font-bold">Expense Manager</h2>
           </SidebarHeader>
           <SidebarContent>
             <SidebarMenu className="px-4 mt-3 ">
               {routes.map((route) => (
                 <SidebarMenuItem key={route.href} className="flex ">
                   <SidebarMenuButton className={`text-sm font-medium h-full `} tooltip={route.title}>
-                    <Link to={route.href} className={`flex py-3 gap-3 px-4 rounded-md w-full  ${route.href == pathname ? "bg-[#1447E6] text-white ":"bg-white text-black" } }`}>
+                    <Link to={route.href} className={`flex py-3 gap-3 px-4 rounded-md w-full  ${route.href == pathname ? "bg-[#2373ba] text-white ":"bg-white text-black" } }`}>
                       <route.icon className="inline-flex " size={18}/>
                       <span>{route.title}</span>
                     </Link>
@@ -67,7 +67,7 @@ export function DashboardSidebar() {
               ))}
             </SidebarMenu>
           </SidebarContent>
-          <SidebarFooter className="border-t bg-[#1447E6] p-4 cursor-pointer">
+          <SidebarFooter className="border-t bg-[#2373ba] p-4 cursor-pointer">
             <SidebarMenu >
               <SidebarMenuItem>
                 <SidebarMenuButton asChild>

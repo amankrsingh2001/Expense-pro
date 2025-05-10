@@ -2,9 +2,14 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, CircleCheck } from "lucide-react";
 import { motion } from "framer-motion";
+import { useSelector } from "react-redux";
+import { useEffect } from "react";
+import axios from "axios";
+import { BASE_URL } from "./redux/api/api";
 
 const App = () => {
   const navigate = useNavigate();
+  const {token} = useSelector((state:any)=>state.user)
 
   const fadeIn = {
     hidden: { opacity: 0, y: 20 },
@@ -25,6 +30,28 @@ const App = () => {
     }
   };
 
+    const verifyUser = async()=>{
+        try {
+            const verify = await axios.post(`${BASE_URL}/user/verifyUser`,{},{
+                headers:{
+                    Authorization:token
+                }
+            })
+             if(verify.data.success){
+                navigate('/dashboard/expense')
+            }
+
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    useEffect(()=>{
+        if(token ){
+            verifyUser()
+        }       
+    })
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white overflow-x-hidden">
       {/* Navigation */}
@@ -41,14 +68,14 @@ const App = () => {
           <Button 
             variant="ghost" 
             onClick={() => navigate("/login")}
-            className="text-blue-600 hover:text-blue-700"
+            className="text-blue-600 cursor-pointer hover:text-blue-700"
           >
             Login
           </Button>
           <Button 
             variant="outline" 
             onClick={() => navigate("/signup")}
-            className="border-blue-600 text-blue-600 hover:bg-blue-50"
+            className="border-blue-600 cursor-pointer bg-blue-700 text-white hover:bg-white hover:text-blue-600 "
           >
             Sign Up
           </Button>
@@ -71,24 +98,21 @@ const App = () => {
             Track spending, monitor income, and reach your financial goals faster.
           </p>
           <motion.div 
-            className="flex flex-col sm:flex-row gap-4"
+            className="flex flex-col sm:flex-row gap-4 items-center"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.4, duration: 0.5 }}
           >
             <Button 
               onClick={() => navigate("/signup")} 
-              className="bg-blue-600 hover:bg-blue-700 text-lg px-6 py-6 h-auto group"
-              size="lg"
-              // whileHover={{ scale: 1.05 }}
-              // whileTap={{ scale: 0.95 }}
+              className="bg-blue-600 hover:bg-blue-700 text-sm py-5 group cursor-pointer"
             >
               Get Started Free
               <motion.span
                 className="inline-block ml-2"
                 initial={{ x: 0 }}
                 animate={{ x: [0, 5, 0] }}
-                transition={{ repeat: Infinity, repeatDelay: 2, duration: 1 }}
+                transition={{ repeat: Infinity, repeatDelay: 1, duration: 1 }}
               >
                 <ArrowRight className="h-5 w-5" />
               </motion.span>
@@ -96,8 +120,8 @@ const App = () => {
             <Button 
               onClick={() => navigate("/login")} 
               variant="outline" 
-              className="border-blue-600 text-blue-600 hover:bg-blue-50 text-lg px-6 py-6 h-auto"
-              size="lg"
+              className="border-blue-600 text-blue-600 hover:bg-blue-50 py-5 text-lg cursor-pointer hover:text-blue-700"
+            
               // whileHover={{ scale: 1.05 }}
               // whileTap={{ scale: 0.95 }}
             >
