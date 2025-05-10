@@ -9,12 +9,12 @@ import { Label } from "@/components/ui/label"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Textarea } from "@/components/ui/textarea"
-import { toast } from "@/hooks/use-toast"
 import { useDispatch, useSelector } from "react-redux"
 import type { AppDispatch } from "@/redux/store/Store"
 import { addExpense, addIncome, deleteAsset,  } from "@/redux/api/api"
 import {  type expenseState } from "@/redux/slice/assetSlice"
 import { exportToPDF } from "@/lib/pdf"
+import { toast } from "sonner"
 
 
 // Define the expense type
@@ -33,7 +33,7 @@ export function ExpenseManager({ view }: { view: ViewType }) {
   const dispatch = useDispatch<AppDispatch>()
   const {token} = useSelector((state:any)=>state.user)
 
-
+  console.log(view)
 
   // Calculate totals
   const totalIncome = expenseValue.incomeData.filter((expense:expenseState) => expense.category === "Income").reduce((sum:number, expense:expenseState) => sum + expense.amount, 0)
@@ -44,23 +44,11 @@ export function ExpenseManager({ view }: { view: ViewType }) {
 
   const balance = totalIncome - totalExpenses
 
-  // Filter expenses based on the current view
  const filteredExpenses = view === "income" ? expenseValue.incomeData : expenseValue.expenseData;
 
-  // Handle form submission
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-  
-
-    // Validate form
-    if (!amount || isNaN(Number(amount)) || Number(amount) <= 0) {
-      toast({
-        title: "Invalid amount",
-        description: "Please enter a valid positive number for the amount.",
-        variant: "destructive",
-      })
-      return
-    }
+    
 
     const data = {
       amount:amount,
@@ -76,31 +64,27 @@ export function ExpenseManager({ view }: { view: ViewType }) {
     }
 
     setAmount("")
-    setCategory("Expense")
+    setTitle('')
+    setCategory("Income")
     setDescription("")
     setShowForm(false)
-
-    toast({
-      title: "Added successfully",
-      description: `${category} of $${Number(amount).toFixed(2)} has been added.`,
-    })
   }
 
   const handleDelete = async(id:string, category:string)=>{
-    dispatch(deleteAsset(token,id,category, view));
+    dispatch(deleteAsset(token,id,category));
   }
 
 
   return (
     <div className="space-y-8">
       <div className="flex items-center justify-between">
-        <Button onClick={() => setShowForm(!showForm)}>
+        <Button className="bg-[#1447E6]" onClick={() => setShowForm(!showForm)}>
           <Plus className=" h-4 w-4" />
           {showForm ? "Cancel" : "Add Transaction"}
         </Button> 
 
-        <Button onClick={() => exportToPDF(filteredExpenses)}>
-          <Download className="h-4 w-4" />
+        <Button className="bg-[#1447E6]" onClick={() => exportToPDF(filteredExpenses)}>
+          <Download className="h-4 w-4 " />
           Export to Pdf
         </Button>
       </div>
@@ -203,7 +187,7 @@ export function ExpenseManager({ view }: { view: ViewType }) {
               </div>
 
               <div className="flex gap-2">
-                <Button type="submit" className="flex-1">
+                <Button type="submit" className="flex-1 bg-[#1447E6]  hover:bg-[#1447E6] ">
                   <Plus className="mr-2 h-4 w-4" /> Add Transaction
                 </Button>
                 <Button type="button" variant="outline" onClick={() => setShowForm(false)}>

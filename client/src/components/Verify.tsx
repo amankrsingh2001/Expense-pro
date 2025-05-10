@@ -4,14 +4,13 @@ import { useSelector } from "react-redux"
 import Dashboard from "./Dashboard"
 import App from "@/App"
 import { BASE_URL } from "@/redux/api/api"
-import {  useNavigate} from "react-router-dom"
+
 
 
 
 export default function Verify(){
-    const [isVerified, setIsVerified] = useState<boolean>(false)
+    const [isVerified, setIsVerified] = useState<boolean | null> (null)
     const {token} = useSelector((state:any)=>state.user)
-    const navigate = useNavigate() 
 
 
     const checkToken = async()=>{
@@ -24,13 +23,10 @@ export default function Verify(){
             
             if(verifyUser.data.success){
                 setIsVerified(true)
-                navigate('/expense')
             }
         } catch (error) {
             setIsVerified(false)
-            
         }
-        
     }
 
     useEffect(()=>{
@@ -38,6 +34,7 @@ export default function Verify(){
             checkToken()
         }
     },[token])
+     if (isVerified === false) return <div>Loading...</div>;
 
     return  (token && isVerified) ? <Dashboard/> : <App/>
     

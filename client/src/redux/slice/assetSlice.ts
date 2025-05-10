@@ -48,8 +48,8 @@ export const assetSlice = createSlice({
         deleteIncome(state, action: PayloadAction<string>) {
             state.incomeData = state.incomeData.filter(item => item.id !== action.payload);
         },
-         deleteExpense(state, action: PayloadAction<string>) {
-            state.expenseData = state.incomeData.filter(item => item.id !== action.payload);
+        deleteExpense(state, action: PayloadAction<string>) {
+            state.expenseData = state.expenseData.filter(item => item.id !== action.payload);
         },
 
 

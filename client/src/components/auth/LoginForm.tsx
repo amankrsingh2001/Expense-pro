@@ -21,9 +21,7 @@ import type { AppDispatch } from "@/redux/store/Store";
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-
     setIsLoading(true)
-
     const data = {
       email:email,
       password:password

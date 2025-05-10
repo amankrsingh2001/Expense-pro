@@ -18,7 +18,7 @@ const Login = ()=>{
                 }
             })
              if(verify.data.success){
-                navigate('/expense')
+                navigate('/dashboard/expense')
             }
 
         } catch (error) {
