@@ -1,0 +1,1 @@
+{"root":["./types.d.ts","./src/index.ts","./src/controller/expensecontroller.ts","./src/controller/usercontroller.ts","./src/lib/prisma.ts","./src/middleware/auth.ts","./src/router/expenserouter.ts","./src/router/mainrouter.ts","./src/router/userrouter.ts"],"version":"5.8.3"}
