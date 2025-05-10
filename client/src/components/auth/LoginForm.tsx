@@ -5,7 +5,7 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Eye, EyeOff, LogIn } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
-import { useToast } from "@/components/ui/use-toast";
+
 import { useDispatch } from "react-redux";
 import { Login } from "@/redux/api/api";
 import type { AppDispatch } from "@/redux/store/Store";
@@ -16,7 +16,6 @@ import type { AppDispatch } from "@/redux/store/Store";
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const { toast } = useToast();
   const dispatch = useDispatch<AppDispatch>()
   const navigate = useNavigate()
 

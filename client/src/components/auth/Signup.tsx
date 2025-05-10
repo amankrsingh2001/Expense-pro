@@ -6,7 +6,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Link, useNavigate } from "react-router-dom";
 import { Eye, EyeOff, UserPlus } from "lucide-react";
 // import { useToast } from "@/components/ui/use-toast";
-import { useToast } from "@/hooks/use-toast";
+
 import axios from "axios"
 import { BASE_URL } from "@/redux/api/api";
 import { toast } from "sonner";
